@@ -20,7 +20,7 @@ app.use(
 
 app.use("/api/inquiry", inquiryRoute);
 app.use('/api/cooks',cookRoute)
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+
 
 const PORT = process.env.PORT || 5000;
 

@@ -1,19 +1,10 @@
-const nodemailer = require("nodemailer");
+const { Resend } = require("resend");
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 const sendMail = async (subject, message) => {
-  const transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
-    port: 587,
-    secure: false,
-    family: 4,
-    auth: {
-      user: process.env.ADMIN_EMAIL,
-      pass: process.env.ADMIN_PASS,
-    },
-  });
-
-  await transporter.sendMail({
-    from: process.env.ADMIN_EMAIL,
+  await resend.emails.send({
+    from: "CookHire <onboarding@resend.dev>",
     to: process.env.ADMIN_EMAIL,
     subject,
     text: message,
