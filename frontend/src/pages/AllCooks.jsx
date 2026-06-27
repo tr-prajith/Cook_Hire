@@ -37,7 +37,7 @@ const AllCooks = () => {
             >
               <div className="flex items-start gap-4 mb-5">
                 <img
-                  src={`${import.meta.env.VITE_API_URL}/uploads/${cook.profilePhoto}`}
+                  src={cook.profilePhoto}
                   alt={cook.fullName}
                   className="w-14 h-14 rounded-full object-cover"
                 />

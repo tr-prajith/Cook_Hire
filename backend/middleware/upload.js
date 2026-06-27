@@ -1,39 +1,26 @@
 const multer = require("multer");
-const path = require("path");
+const { CloudinaryStorage } = require("multer-storage-cloudinary");
+const cloudinary = require("../config/cloudinary");
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "uploads/");
-  },
+const storage = new CloudinaryStorage({
+  cloudinary,
+  params: async (req, file) => {
+    const isPdf = file.mimetype === "application/pdf";
 
-  filename: (req, file, cb) => {
-    const uniqueName = Date.now() + path.extname(file.originalname);
-    cb(null, uniqueName);
+    return {
+      folder: "cookhire",
+      resource_type: isPdf ? "raw" : "image",
+      allowed_formats: ["jpg", "jpeg", "png", "pdf"],
+      public_id: Date.now() + "-" + file.originalname.split(".")[0],
+    };
   },
 });
-
-const fileFilter = (req, file, cb) => {
-  const allowedTypes = /jpg|jpeg|png|pdf/;
-
-  const extName = allowedTypes.test(
-    path.extname(file.originalname).toLowerCase()
-  );
-
-  const mimeType = allowedTypes.test(file.mimetype);
-
-  if (extName && mimeType) {
-    return cb(null, true);
-  }
-
-  cb(new Error("Only JPG, JPEG, PNG and PDF files are allowed."));
-};
 
 const upload = multer({
   storage,
   limits: {
-    fileSize: 5 * 1024 * 1024, // 5 MB
+    fileSize: 5 * 1024 * 1024,
   },
-  fileFilter,
 });
 
 module.exports = upload;

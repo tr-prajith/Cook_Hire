@@ -51,6 +51,7 @@ const CookRegistration = () => {
       cookData.append("website", data.website);
 
       const res = await registerCook(cookData);
+      
 
       if (res.success) {
         toast.success(res.message);

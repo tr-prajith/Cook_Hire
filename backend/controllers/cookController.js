@@ -45,8 +45,8 @@ const registerCook = async (req, res) => {
             });
         }
 
-        const profilePhoto = req.files.profilePhoto[0].filename;
-        const document = req.files.document[0].filename;
+        const profilePhoto = req.files.profilePhoto[0].path;
+        const document = req.files.document[0].path;
 
         const cook = await Cook.create({
             fullName,
