@@ -37,23 +37,21 @@ const createInquiry = async (req, res) => {
         });
 
         // nodemailer
-        try {
-            await sendMail(
-                "New Customer Inquiry - CookHire",
-                `
-                New customer inquiry received.
+        sendMail(
+            "New Customer Inquiry - CookHire",
+            `
+    New customer inquiry received.
 
-                Name: ${name}
-                Phone: ${phone}
-                Email: ${email || "Not provided"}
-                Location: ${location}
-                Service Requirement: ${serviceRequirement}
-                Additional Notes: ${additionalNotes || "No notes"}
-              `
-            );
-        } catch (mailError) {
+    Name: ${name}
+    Phone: ${phone}
+    Email: ${email || "Not provided"}
+    Location: ${location}
+    Service Requirement: ${serviceRequirement}
+    Additional Notes: ${additionalNotes || "No notes"}
+    `
+        ).catch((mailError) => {
             console.log("Email sending failed:", mailError.message);
-        }
+        });
 
         res.status(201).json({
             success: true,
