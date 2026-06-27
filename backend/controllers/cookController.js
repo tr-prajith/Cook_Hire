@@ -14,7 +14,7 @@ const registerCook = async (req, res) => {
             startingPrice,
             website
         } = req.body;
-        
+
 
         if (website) {
             return res.status(400).json({
@@ -63,25 +63,23 @@ const registerCook = async (req, res) => {
         });
 
         // Nodemailer
-        try {
-            await sendMail(
-                "New Cook Registration - CookHire",
-                `
-            New cook registration received.
-
-            Name: ${fullName}
-            Phone: ${phone}
-            Email: ${email || "Not provided"}
-            Experience: ${experience}
-            Cuisine Specialization: ${cuisineSpecialization}
-            Preferred Work Type: ${preferredWorkType}
-            Preferred Location: ${preferredLocation}
-            Starting Price: ₹${startingPrice}/Meal
+        sendMail(
+            "New Cook Registration - CookHire",
             `
-            );
-        } catch (mailError) {
+New cook registration received.
+
+Name: ${fullName}
+Phone: ${phone}
+Email: ${email || "Not provided"}
+Experience: ${experience}
+Cuisine Specialization: ${cuisineSpecialization}
+Preferred Work Type: ${preferredWorkType}
+Preferred Location: ${preferredLocation}
+Starting Price: ₹${startingPrice}/Meal
+`
+        ).catch((mailError) => {
             console.log("Email sending failed:", mailError.message);
-        }
+        });
 
         res.status(201).json({
             success: true,
@@ -99,21 +97,21 @@ const registerCook = async (req, res) => {
 
 
 const getCooks = async (req, res) => {
-  try {
-    const cooks = await Cook.find().sort({ createdAt: -1 });
+    try {
+        const cooks = await Cook.find().sort({ createdAt: -1 });
 
-    res.status(200).json({
-      success: true,
-      message: "All cooks fetched successfully",
-      data: cooks,
-    });
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "Unable to fetch cooks",
-      error: error.message,
-    });
-  }
+        res.status(200).json({
+            success: true,
+            message: "All cooks fetched successfully",
+            data: cooks,
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: "Unable to fetch cooks",
+            error: error.message,
+        });
+    }
 };
 
 module.exports = { registerCook, getCooks };
